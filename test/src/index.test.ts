@@ -1,14 +1,23 @@
-const Index = require("../../src/index");
-import { describe, expect, it } from "@jest/globals";
+// Tests para index.ts
+import plugin from '../../src/index';
 
-describe("index", () => {
-  it("prepare is a function", () => {
-    expect(Index.prepare).toBeInstanceOf(Function);
+describe('plugin', () => {
+  it('should export verifyConditions, prepare, and publish functions', () => {
+    expect(plugin).toHaveProperty('verifyConditions');
+    expect(plugin).toHaveProperty('prepare');
+    expect(plugin).toHaveProperty('publish');
+    
+    expect(typeof plugin.verifyConditions).toBe('function');
+    expect(typeof plugin.prepare).toBe('function');
+    expect(typeof plugin.publish).toBe('function');
   });
-  it("publish is a function", () => {
-    expect(Index.publish).toBeInstanceOf(Function);
-  });
-  it("verifyConditions is a function", () => {
-    expect(Index.verifyConditions).toBeInstanceOf(Function);
+
+  it('should have correct function names for semantic-release', () => {
+    // Verificar que las funciones tienen los nombres esperados por semantic-release
+    expect(Object.keys(plugin)).toEqual([
+      'verifyConditions',
+      'prepare',
+      'publish'
+    ]);
   });
 });
