@@ -1,22 +1,29 @@
-// Eliminar ILastRelease, INextRelease, IContext y usar las interfaces de semantic-release
-import { Context, NextRelease, LastRelease } from 'semantic-release';
-
-// Exportar interfaces específicas del plugin si es necesario
+// Tipos para el plugin
 export interface PluginConfig {
   gradleCommand?: string;
   gradleOptions?: string[];
   gradleProperties?: Record<string, string>;
+  buildGradle?: string;
   gradleWrapper?: string;
-  gradleWrapperPermissions?: string;
+  gradlePropertiesFile?: string;
 }
 
-// Exportar tipos de contexto específicos si es necesario
-export interface GradleContext extends Context {
-  // Campos adicionales específicos de Gradle si los necesitas
-}
-
-// Mantener solo interfaces específicas del plugin si las necesitas
-export interface GradleTaskInfo {
-  task: string[];
+// Contexto para semantic-release v25
+export interface Context {
+  cwd: string;
+  env: Record<string, string>;
+  stdout: NodeJS.WriteStream;
+  stderr: NodeJS.WriteStream;
   logger: any;
+  options: any;
+  branch: any;
+  branches: any[];
+  commits: any[];
+  releases: any[];
+  lastRelease?: any;
+  nextRelease?: any;
 }
+
+// Tipos para compatibilidad
+export type NextRelease = any;
+export type LastRelease = any;

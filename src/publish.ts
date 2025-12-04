@@ -1,10 +1,20 @@
-import type { Context } from 'semantic-release'; // Importar Context
-import { publishArtifact } from "./gradle";
+import { PluginConfig, Context } from "./definition";
+import { runGradle } from "./gradle";
 
 export default async function publish(
-  pluginConfig: object,
+  pluginConfig: PluginConfig,
   context: Context,
-) {
-  const { cwd, env, logger } = context;
-  await publishArtifact(cwd, env as NodeJS.ProcessEnv, logger);
+): Promise<void> {
+  const { cwd, logger } = context;
+  const { gradleCommand, gradleOptions, gradleProperties } = pluginConfig;
+
+  logger.log("Publishing Gradle project...");
+
+  await runGradle("publish", {
+    cwd,
+    gradleCommand,
+    gradleOptions,
+    gradleProperties,
+    logger,
+  });
 }

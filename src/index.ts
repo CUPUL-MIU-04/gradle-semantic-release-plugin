@@ -1,12 +1,9 @@
-import { Config } from 'semantic-release';
-import verifyConditions from './verify-conditions';
-import prepare from './prepare';
-import publish from './publish';
+import verifyConditions from "./verify-conditions";
+import prepare from "./prepare";
+import publish from "./publish";
 
-const pluginConfig: Config = {
+export = {
   verifyConditions,
   prepare,
   publish,
 };
-
-export = pluginConfig;

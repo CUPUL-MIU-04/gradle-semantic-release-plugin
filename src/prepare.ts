@@ -1,44 +1,20 @@
-import { existsSync } from "fs";
-import { join } from "path";
-import { parseFile, write } from "promisified-properties";
-import type { Context } from 'semantic-release'; // Importar Context
-import { getVersion } from "./gradle";
-import { Entry } from "promisified-properties/lib/types";
+import { PluginConfig, Context } from "./definition";
+import { runGradle } from "./gradle";
 
-export async function updateVersion(
-  cwd: string,
-  version: string,
+export default async function prepare(
+  pluginConfig: PluginConfig,
+  context: Context,
 ): Promise<void> {
-  const path = join(cwd, "gradle.properties");
-  if (existsSync(path)) {
-    const prop = await parseFile(path);
-    const index = prop.findIndex(
-      (entry) => "key" in entry && entry.key == "version",
-    );
-    if (index < 0) {
-      prop.push({ key: "version", value: version });
-    } else {
-      (prop[index] as Entry).value = version;
-    }
-    return write(prop, path);
-  } else {
-    return write([{ key: "version", value: version }], path);
-  }
-}
+  const { cwd, logger } = context;
+  const { gradleCommand, gradleOptions, gradleProperties } = pluginConfig;
 
-export default async function prepare(pluginConfig: object, context: Context) {
-  const { cwd, env, nextRelease } = context;
-  
-  if (!nextRelease) {
-    throw new Error("No nextRelease found in context");
-  }
-  
-  await updateVersion(cwd, nextRelease.version);
-  const version = await getVersion(cwd, env as NodeJS.ProcessEnv);
-  if (version !== nextRelease.version) {
-    throw new Error(
-      `Failed to update version from ${version} to ${nextRelease.version}. ` +
-        "Make sure that you define version not in build.gradle but in gradle.properties.",
-    );
-  }
+  logger.log("Preparing Gradle project...");
+
+  await runGradle("build", {
+    cwd,
+    gradleCommand,
+    gradleOptions,
+    gradleProperties,
+    logger,
+  });
 }
