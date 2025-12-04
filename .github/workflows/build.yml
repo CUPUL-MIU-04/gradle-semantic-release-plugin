@@ -28,12 +28,14 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
-    - name: Run basic validation
+    - name: Run simple validation
       run: npm run test:simple
     
     - name: Run Jest tests
       run: npm run test:ci
-      continue-on-error: false
+      env:
+        # Asegurar que Jest funciona correctamente
+        NODE_OPTIONS: "--max-old-space-size=4096"
   
   lint:
     runs-on: ubuntu-latest

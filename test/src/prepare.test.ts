@@ -5,6 +5,8 @@ import { runGradle } from "../../src/gradle";
 // Mock de runGradle
 jest.mock("../../src/gradle");
 
+const mockedRunGradle = runGradle as jest.Mock;
+
 describe("prepare", () => {
   const mockContext = {
     cwd: "/test/path",
@@ -21,12 +23,13 @@ describe("prepare", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedRunGradle.mockResolvedValue(undefined);
   });
 
   it("should call runGradle with build task", async () => {
     await prepare(mockPluginConfig, mockContext as any);
 
-    expect(runGradle).toHaveBeenCalledWith("build", {
+    expect(mockedRunGradle).toHaveBeenCalledWith("build", {
       cwd: "/test/path",
       gradleCommand: "./gradlew",
       gradleOptions: ["--stacktrace"],
@@ -39,7 +42,7 @@ describe("prepare", () => {
     const config = {};
     await prepare(config, mockContext as any);
 
-    expect(runGradle).toHaveBeenCalledWith("build", {
+    expect(mockedRunGradle).toHaveBeenCalledWith("build", {
       cwd: "/test/path",
       gradleCommand: undefined,
       gradleOptions: undefined,

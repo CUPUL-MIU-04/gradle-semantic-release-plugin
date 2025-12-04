@@ -23,7 +23,8 @@
   "scripts": {
     "all": "npm pack && npm test",
     "prepack": "tsc",
-    "test": "node test-runner.js",
+    "test": "node test-no-jest.js",
+    "test:jest": "jest --testTimeout=30000 --maxWorkers=1",
     "test:ci": "jest --ci --testTimeout=30000 --maxWorkers=1 --coverage",
     "test:simple": "node test-simple-ci.js",
     "semantic-release": "semantic-release",
