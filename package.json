@@ -31,7 +31,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "execa": "^7.1.1",
+    "execa": "^5.1.1",
     "fs-extra": "^11.1.1",
     "promisified-properties": "^3.0.0",
     "split2": "^4.1.0"

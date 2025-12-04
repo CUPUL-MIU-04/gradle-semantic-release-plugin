@@ -1,6 +1,6 @@
-import { execa } from 'execa';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import execa from "execa";
+import * as fs from "fs-extra";
+import * as path from "path";
 
 export interface GradleOptions {
   cwd: string;
@@ -12,19 +12,19 @@ export interface GradleOptions {
 
 export async function runGradle(
   task: string,
-  options: GradleOptions
+  options: GradleOptions,
 ): Promise<void> {
   const {
     cwd,
-    gradleCommand = './gradlew',
+    gradleCommand = "./gradlew",
     gradleOptions = [],
     gradleProperties = {},
     logger,
   } = options;
 
   // Ensure gradlew is executable
-  if (gradleCommand === './gradlew') {
-    const gradlewPath = path.join(cwd, 'gradlew');
+  if (gradleCommand === "./gradlew") {
+    const gradlewPath = path.join(cwd, "gradlew");
     if (await fs.pathExists(gradlewPath)) {
       await fs.chmod(gradlewPath, 0o755);
     }
@@ -33,19 +33,19 @@ export async function runGradle(
   const args = [
     ...(gradleProperties
       ? Object.entries(gradleProperties).map(
-          ([key, value]) => `-P${key}=${value}`
+          ([key, value]) => `-P${key}=${value}`,
         )
       : []),
     ...(gradleOptions || []),
     task,
-    '--stacktrace',
+    "--stacktrace",
   ].filter(Boolean);
 
-  logger?.log(`Running: ${gradleCommand} ${args.join(' ')}`);
+  logger?.log(`Running: ${gradleCommand} ${args.join(" ")}`);
 
   const { stdout, stderr } = await execa(gradleCommand, args, {
     cwd,
-    stdio: 'pipe',
+    stdio: "pipe",
   });
 
   if (stdout) {
