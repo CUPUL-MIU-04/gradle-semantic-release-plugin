@@ -1,7 +1,7 @@
 {
   "name": "gradle-semantic-release-plugin",
   "version": "1.10.3",
-  "description": "Automated release management for Gradle project",
+  "description": "Automated release management for Gradle project - Compatible with semantic-release v25+",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
@@ -10,7 +10,10 @@
   },
   "keywords": [
     "semantic-release",
-    "gradle"
+    "gradle",
+    "release",
+    "automation",
+    "ci/cd"
   ],
   "files": [
     "README.md",
@@ -27,6 +30,7 @@
     "test:jest": "jest --testTimeout=30000 --maxWorkers=1",
     "test:ci": "jest --ci --testTimeout=30000 --maxWorkers=1 --coverage",
     "test:simple": "node test-simple-ci.js",
+    "test:compat": "node test-compatibility.js",
     "semantic-release": "semantic-release",
     "prepare": "husky",
     "build": "tsc"
@@ -57,7 +61,12 @@
     "node": ">=18"
   },
   "peerDependencies": {
-    "semantic-release": "^24.0.0 || ^25.0.0"
+    "semantic-release": ">=24.0.0 <26.0.0"
+  },
+  "peerDependenciesMeta": {
+    "semantic-release": {
+      "optional": false
+    }
   },
   "release": {
     "verifyConditions": [
